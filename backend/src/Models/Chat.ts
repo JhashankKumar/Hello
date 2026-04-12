@@ -2,8 +2,8 @@ import mongoose, { Schema, Document } from "mongoose";
 
 export interface IChat extends Document {
   participants: mongoose.Types.ObjectId[];
-  lastMessage?: mongoose.Types.ObjectId;
-  lastMessageAt?: Date;
+  lastMessage: mongoose.Types.ObjectId;
+  lastMessageAt: Date;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -24,10 +24,15 @@ const ChatSchema = new Schema<IChat>(
     },
     lastMessageAt: {
       type: Date,
-      default: Date.now,
+      default: null,
     },
   },
   { timestamps: true },
+);
+
+ChatSchema.path("participants").validate(
+  (value: mongoose.Types.ObjectId[]) => value.length > 0,
+  "At least two participants are required",
 );
 
 const Chat = mongoose.model("Chat", ChatSchema);

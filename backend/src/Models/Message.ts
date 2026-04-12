@@ -4,7 +4,7 @@ export interface IMessage extends Document {
   chat: mongoose.Types.ObjectId;
   sender: mongoose.Types.ObjectId;
   text: string;
-  media?: string;
+  media?: string | null;
   createdAt: Date;
   updatedAt: Date;
 }
