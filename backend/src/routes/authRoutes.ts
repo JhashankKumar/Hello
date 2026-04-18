@@ -5,9 +5,10 @@ import { protectRoute } from "../middleware/auth";
 const router = Router();
 
 // /api/v1/auth/me
-router.get("/me", protectRoute, getMe);
+router.use(protectRoute);
+router.get("/me", getMe);
 
 // /api/v1/auth/callback
-router.post("/callback", protectRoute, authCallback);
+router.post("/callback", authCallback);
 
 export default router;
