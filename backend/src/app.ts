@@ -1,4 +1,5 @@
 import express from "express";
+import path from "path";
 import userRoutes from "./routes/userRoutes";
 import messageRoutes from "./routes/messageRoutes";
 import chatRoutes from "./routes/chatRoutes";
@@ -23,5 +24,13 @@ app.use("/api/v1/chats", chatRoutes);
 /* error handler must come after all the routes and other middlewares so they can catch any errors passed with next(error)
 or throw inside async handlers */
 app.use(errorHandler);
+
+// serve frontend in production
+if (process.env.NODE_ENV === "production") {
+    app.use(express.static(path.join(__dirname, "../../web/dist")));
+    app.get("*", (req, res) => {
+        res.sendFile(path.join(__dirname, "../../web/dist", "index.html"));
+    });
+}
 
 export default app;

@@ -1,13 +1,18 @@
 import app from "./src/app";
 import connectDB from "./src/config/database";
+import { createServer } from "http";
+import { initializeSocket } from "./src/utils/socket";
 
 const PORT = process.env.PORT || 3000;
+
+const httpServer = createServer(app);
+initializeSocket(httpServer);
 
 const startServer = async () => {
     try {
         await connectDB();
         console.log("✅ Connected to MongoDB");
-        app.listen(PORT, () => {
+        httpServer.listen(PORT, () => {
             console.log(`✅ Server is up and listening on port ${PORT}`);
         });
     } catch (error) {
